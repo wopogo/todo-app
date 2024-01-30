@@ -6,7 +6,6 @@ export default function App() {
   const [todoInput, setTodoInput] = useState("");
   const [todoList, setTodoList] = useState([]);
   const [todoKey, setTodoKey] = useState(0);
-  // console.log("todoInput :", todoInput);
   console.log("todoList :", todoList);
   console.log("todoKey :", todoKey);
 
