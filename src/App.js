@@ -1,6 +1,27 @@
 import "./App.css";
 import { useState } from "react";
-import TodoList from './component/todoList';
+import TodoList from "./component/todoList";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import { createSvgIcon } from "@mui/material/utils";
+
+const PlusIcon = createSvgIcon(
+  // credit: plus icon from https://heroicons.com/
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 4.5v15m7.5-7.5h-15"
+    />
+  </svg>,
+  "Plus"
+);
 
 export default function App() {
   const [todoInput, setTodoInput] = useState("");
@@ -10,16 +31,21 @@ export default function App() {
   console.log("todoKey :", todoKey);
 
   const deleteTodoList = (id) => {
-    const filteredTodoList = todoList.filter(list => list.id !== id);
+    const filteredTodoList = todoList.filter((list) => list.id !== id);
     setTodoList(filteredTodoList);
-  }
+  };
   return (
-    <div className="container">
+    <Paper className="container" elevation={3} square={false}>
       <ul className="todo-element">
         {todoList.map((list) => {
           return (
-            <TodoList key={list.id} todo={list.todo} id={list.id} onDelete={deleteTodoList} />
-          )
+            <TodoList
+              key={list.id}
+              todo={list.todo}
+              id={list.id}
+              onDelete={deleteTodoList}
+            />
+          );
         })}
       </ul>
       <form
@@ -32,17 +58,19 @@ export default function App() {
           setTodoList(newTodoLists);
         }}
       >
-        <input
+        <TextField
           type="text"
           name="todo"
-          placeholder="오늘은 뭐해야하지?"
+          label="오늘은 뭐해야하지?"
           value={todoInput}
           onChange={(e) => {
             setTodoInput(e.target.value);
           }}
         />
-        <input type="submit" value="+" />
+        <button type="submit">
+          <PlusIcon />
+        </button>
       </form>
-    </div>
+    </Paper>
   );
 }

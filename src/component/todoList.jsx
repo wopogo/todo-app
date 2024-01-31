@@ -1,4 +1,6 @@
 import { useState } from "react";
+import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
+import Paper from "@mui/material/Paper";
 
 export default function TodoList({ todo, id, onDelete }) {
   const [color, setColor] = useState("black");
@@ -8,10 +10,10 @@ export default function TodoList({ todo, id, onDelete }) {
   };
   return (
     <li>
-      <span onClick={changeText} style={{ color }}>
-        {todo}
-      </span>
-      <button onClick={() => onDelete(id)}>X</button>
+      <Paper elevation={2} onClick={changeText}>
+        <span style={{ color }}>{todo}</span>
+        <DeleteForeverTwoToneIcon onClick={() => onDelete(id)} />
+      </Paper>
     </li>
   );
 }
