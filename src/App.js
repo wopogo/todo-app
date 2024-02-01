@@ -16,7 +16,7 @@ export default function App() {
       const todoJson = JSON.parse(localStorage.getItem(todoKey));
       loadedTodos.push(todoJson);
     }
-    setTodoList(loadedTodos);
+    setTodoList(loadedTodos.sort((a, b) => a.id - b.id));
   }, []);
 
   const handleSubmit = (e) => {
