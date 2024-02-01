@@ -1,71 +1,46 @@
 import "./App.css";
-import { useState } from "react";
-import TodoList from "./component/todoList";
+import { useEffect, useState } from "react";
+import createTime from "./function/createDate";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-import { createSvgIcon } from "@mui/material/utils";
-
-const PlusIcon = createSvgIcon(
-  // credit: plus icon from https://heroicons.com/
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={1.5}
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 4.5v15m7.5-7.5h-15"
-    />
-  </svg>,
-  "Plus"
-);
+import PlusIcon from "./style/plusIcon";
 
 export default function App() {
-  const [todoInput, setTodoInput] = useState("");
+  const [todo, setTodo] = useState("");
   const [todoList, setTodoList] = useState([]);
-  const [todoKey, setTodoKey] = useState(0);
-  console.log("todoList :", todoList);
-  console.log("todoKey :", todoKey);
 
-  const deleteTodoList = (id) => {
-    const filteredTodoList = todoList.filter((list) => list.id !== id);
-    setTodoList(filteredTodoList);
+  useEffect(() => {
+    const loadedTodos = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const todoKey = localStorage.key(i);
+      const todoJson = JSON.parse(localStorage.getItem(todoKey));
+      loadedTodos.push(todoJson);
+    }
+    setTodoList(loadedTodos);
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const time = createTime();
+    const newTodo = { id: time, todo: todo };
+    localStorage.setItem(time, JSON.stringify(newTodo));
+    setTodoList([...todoList, newTodo]);
+    setTodo("");
   };
+
   return (
     <Paper className="container" elevation={3} square={false}>
-      <ul className="todo-element">
-        {todoList.map((list) => {
-          return (
-            <TodoList
-              key={list.id}
-              todo={list.todo}
-              id={list.id}
-              onDelete={deleteTodoList}
-            />
-          );
-        })}
+      <ul>
+        {todoList.map((list) => (
+          <li key={list.id}>{list.todo}</li>
+        ))}
       </ul>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const newTodoList = { id: todoKey, todo: todoInput };
-          const newTodoLists = [...todoList, newTodoList];
-          setTodoInput("");
-          setTodoKey(todoKey + 1);
-          setTodoList(newTodoLists);
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <TextField
-          type="text"
+          label="할 일을 입력해주세요."
           name="todo"
-          label="오늘은 뭐해야하지?"
-          value={todoInput}
-          onChange={(e) => {
-            setTodoInput(e.target.value);
-          }}
+          value={todo}
+          onChange={(e) => setTodo(e.target.value)}
         />
         <button type="submit">
           <PlusIcon />
