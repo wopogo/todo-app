@@ -4,10 +4,13 @@ import createTime from "./function/createDate";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import PlusIcon from "./style/plusIcon";
+import TodoList from "./component/todoList";
+import deleteTodo from "./function/deleteTodo";
 
 export default function App() {
   const [todo, setTodo] = useState("");
   const [todoList, setTodoList] = useState([]);
+  const [refresh, setRresh] = useState(true);
 
   useEffect(() => {
     const loadedTodos = [];
@@ -17,8 +20,12 @@ export default function App() {
       loadedTodos.push(todoJson);
     }
     setTodoList(loadedTodos.sort((a, b) => a.id - b.id));
-  }, []);
+  }, [refresh]);
 
+  const refreshFn = () => {
+    setRresh(!refresh);
+  };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const time = createTime();
@@ -30,11 +37,7 @@ export default function App() {
 
   return (
     <Paper className="container" elevation={3} square={false}>
-      <ul>
-        {todoList.map((list) => (
-          <li key={list.id}>{list.todo}</li>
-        ))}
-      </ul>
+      <TodoList list={todoList} onDelete={deleteTodo} onRefresh={refreshFn} />
       <form onSubmit={handleSubmit}>
         <TextField
           label="할 일을 입력해주세요."

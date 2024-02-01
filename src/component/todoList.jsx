@@ -1,19 +1,32 @@
-import { useState } from "react";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
-import Paper from "@mui/material/Paper";
 
-export default function TodoList({ todo, id, onDelete }) {
-  const [color, setColor] = useState("black");
-  // const [textLine, setTextLine] = useState("none");
-  const changeText = () => {
-    setColor(color === "black" ? "gray" : "black");
+export default function TodoList({ list, onDelete, onRefresh }) {
+  const cpmpleteTodo = (event) => {
+    event.target.style.color =
+      event.target.style.color === "black" ? "gray" : "black";
   };
   return (
-    <li>
-      <Paper elevation={2} onClick={changeText}>
-        <span style={{ color }}>{todo}</span>
-        <DeleteForeverTwoToneIcon onClick={() => onDelete(id)} />
-      </Paper>
-    </li>
+    <ul>
+      {list.map((list) => {
+        return (
+          <li key={list.id}>
+            <span
+              onClick={(e) => {
+                cpmpleteTodo(e);
+              }}
+              style={{ color: "black" }}
+            >
+              {list.todo}
+            </span>
+            <DeleteForeverTwoToneIcon
+              onClick={() => {
+                onDelete(list.id);
+                onRefresh();
+              }}
+            />
+          </li>
+        );
+      })}
+    </ul>
   );
 }
