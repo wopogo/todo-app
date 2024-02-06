@@ -1,30 +1,23 @@
-import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import Todo from './todo'
 
 export default function TodoList({ list, onDelete, onRefresh }) {
-  const cpmpleteTodo = (event) => {
-    event.target.style.color =
-      event.target.style.color === "black" ? "gray" : "black";
-  };
   return (
     <ul>
       {list.map((list) => {
         return (
-          <li key={list.id}>
-            <span
-              onClick={(e) => {
-                cpmpleteTodo(e);
-              }}
-              style={{ color: "black" }}
-            >
-              {list.todo}
-            </span>
-            <DeleteForeverTwoToneIcon
-              onClick={() => {
-                onDelete(list.id);
-                onRefresh();
-              }}
-            />
-          </li>
+          <>
+            <li key={list.id}>
+              <Todo todo={list.todo} />
+              <DeleteOutlineIcon
+                onClick={() => {
+                  onDelete(list.id);
+                  onRefresh();
+                }}
+              />
+            </li>
+            <hr />
+          </>
         );
       })}
     </ul>
