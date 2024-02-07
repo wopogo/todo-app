@@ -5,8 +5,9 @@ import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import PlusIcon from "./style/plusIcon";
 import TodoList from "./component/todoList";
-import Sentence from "./component/sentence"
+import Sentence from "./component/sentence";
 import deleteTodo from "./function/deleteTodo";
+import CurrentDate from "./component/date";
 import { Helmet } from "react-helmet";
 
 export default function App() {
@@ -38,8 +39,9 @@ export default function App() {
   };
 
   return (
-    <Paper className="container" elevation={3} square={false}>
+    <Paper className="container" elevation={8} square={false}>
       <div className="Paper-container">
+        <CurrentDate />
         <Sentence />
         <Helmet>
           <title>Todo App</title>
@@ -53,12 +55,13 @@ export default function App() {
         <TodoList list={todoList} onDelete={deleteTodo} onRefresh={refreshFn} />
         <form onSubmit={handleSubmit}>
           <TextField
-            label="할 일을 입력해주세요."
+            placeholder="오늘의 할 일을 적어주세요."
             name="todo"
             value={todo}
             onChange={(e) => setTodo(e.target.value)}
+            fullWidth
           />
-          <button type="submit">
+          <button type="submit" style={{ display: "none" }}>
             <PlusIcon />
           </button>
         </form>
