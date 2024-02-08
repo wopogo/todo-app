@@ -2,12 +2,12 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import createTime from "./function/createDate";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
 import PlusIcon from "./style/plusIcon";
 import TodoList from "./component/todoList";
 import Sentence from "./component/sentence";
 import deleteTodo from "./function/deleteTodo";
 import CurrentDate from "./component/date";
+import InputBase from '@mui/material/InputBase';
 import { Helmet } from "react-helmet";
 
 export default function App() {
@@ -39,7 +39,7 @@ export default function App() {
   };
 
   return (
-    <Paper className="container" elevation={8} square={false}>
+    <Paper className="container" elevation={8} square={false} sx={{padding : "20px", display:"flex", justifyContent:"center"}}>
       <div className="Paper-container">
         <CurrentDate />
         <Sentence />
@@ -53,18 +53,20 @@ export default function App() {
           </style>
         </Helmet>
         <TodoList list={todoList} onDelete={deleteTodo} onRefresh={refreshFn} />
-        <form onSubmit={handleSubmit}>
-          <TextField
+        <Paper onSubmit={handleSubmit} component="form" sx={{ bottom: 0, p: "10px", width : "92%", margin : "20px"}} elevation={4}>
+          <InputBase
             placeholder="오늘의 할 일을 적어주세요."
             name="todo"
             value={todo}
             onChange={(e) => setTodo(e.target.value)}
             fullWidth
+            autoFocus
+            sx={{ ml: 2}}
           />
-          <button type="submit" style={{ display: "none" }}>
-            <PlusIcon />
-          </button>
-        </form>
+        </Paper>
+        <button type="submit" style={{ display: "none" }}>
+          <PlusIcon />
+        </button>
       </div>
     </Paper>
   );
