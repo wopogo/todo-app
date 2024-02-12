@@ -7,13 +7,16 @@ import TodoList from "./component/todoList";
 import Sentence from "./component/sentence";
 import deleteTodo from "./function/deleteTodo";
 import CurrentDate from "./component/date";
-import InputBase from '@mui/material/InputBase';
+import InputBase from "@mui/material/InputBase";
+import ModeOutlinedIcon from "@mui/icons-material/ModeOutlined";
+import IconButton from "@mui/material/IconButton"
 import { Helmet } from "react-helmet";
 
 export default function App() {
   const [todo, setTodo] = useState("");
   const [todoList, setTodoList] = useState([]);
   const [refresh, setRresh] = useState(true);
+  const [mode, setMode] = useState(false);
 
   useEffect(() => {
     const loadedTodos = [];
@@ -39,8 +42,16 @@ export default function App() {
   };
 
   return (
-    <Paper className="container" elevation={8} square={false} sx={{padding : "20px", display:"flex", justifyContent:"center"}}>
+    <Paper
+      className="container"
+      elevation={8}
+      square={false}
+      sx={{ padding: "20px", display: "flex", justifyContent: "center" }}
+    >
       <div className="Paper-container">
+        <IconButton sx={{position: "absolute", right: "10px", top: "10px", cursor: "pointer"}} onClick={() => setMode(!mode)} >
+          <ModeOutlinedIcon sx={{color: "rgb(73, 55, 42)"}} />
+        </IconButton>
         <CurrentDate />
         <Sentence />
         <Helmet>
@@ -53,7 +64,12 @@ export default function App() {
           </style>
         </Helmet>
         <TodoList list={todoList} onDelete={deleteTodo} onRefresh={refreshFn} />
-        <Paper onSubmit={handleSubmit} component="form" sx={{ bottom: 0, p: "10px", width : "92%", margin : "20px"}} elevation={4}>
+        {(mode === false ? <><Paper
+          onSubmit={handleSubmit}
+          component="form"
+          sx={{ bottom: 0, p: "10px", width: "92%", margin: "20px" }}
+          elevation={4}
+        >
           <InputBase
             placeholder="오늘의 할 일을 적어주세요."
             name="todo"
@@ -61,12 +77,12 @@ export default function App() {
             onChange={(e) => setTodo(e.target.value)}
             fullWidth
             autoFocus
-            sx={{ ml: 2}}
+            sx={{ ml: 2 }}
           />
         </Paper>
         <button type="submit" style={{ display: "none" }}>
           <PlusIcon />
-        </button>
+        </button></> : undefined)}
       </div>
     </Paper>
   );
