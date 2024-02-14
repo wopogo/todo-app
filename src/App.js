@@ -63,7 +63,7 @@ export default function App() {
             url('https://fonts.googleapis.com/css2?family=Cute+Font&family=Noto+Sans+KR:wght@400;700&family=Poppins:wght@400;600&family=Titillium+Web:wght@300;400;700&display=swap');`}
           </style>
         </Helmet>
-        <TodoList list={todoList} onDelete={deleteTodo} onRefresh={refreshFn} />
+        <TodoList list={todoList} onDelete={deleteTodo} onRefresh={refreshFn} onTodo={setTodoList} />
         {(mode === false ? <><Paper
           onSubmit={handleSubmit}
           component="form"
